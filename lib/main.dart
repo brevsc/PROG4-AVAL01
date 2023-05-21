@@ -1,4 +1,7 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
+import './models/operation.dart';
+import './widgets/alert.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,64 +10,71 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Bank',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: Colors.purple,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const HomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+class _HomePageState extends State<HomePage> {
+  double balance = 1000.0;
+  TextEditingController valueController = TextEditingController();
+  List<Operation> operations = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: const Text('Nubank 2'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            TextButton(
+              onPressed: () {
+                Random random = Random();
+                double value = (random.nextDouble() * 999.99) + 0.01;
+                value = double.parse(value.toStringAsFixed(2));
+                DateTime data =
+                    DateTime.now().subtract(Duration(days: random.nextInt(30)));
+
+                setState(() {
+                  balance += value;
+                  operations.add(Operation('Depósito', data, value));
+                });
+
+                String formattedHour = data.toIso8601String().substring(11, 19);
+
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Alert(
+                        title: 'Sucesso',
+                        description:
+                            'Depósito de R\$ ${value.toStringAsFixed(2)} realizado com sucesso às $formattedHour',
+                        buttonText: 'Ok');
+                  },
+                );
+              },
+              child: const Text('Depósito'),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
