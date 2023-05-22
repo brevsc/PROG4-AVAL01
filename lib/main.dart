@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Bank',
+      title: 'AxiomFinance',
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nubank 2'),
+        title: const Text('AxiomFinance'),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -61,6 +61,9 @@ class _HomePageState extends State<HomePage> {
                 Operation operation = operations[index];
                 String formattedDate = formatDateTime(operation.date);
                 return ListTile(
+                  leading: operation.description == 'Depósito'
+                      ? Icon(Icons.add, color: Colors.purple.shade700)
+                      : Icon(Icons.remove, color: Colors.purple.shade700),
                   title: Text(operation.description),
                   subtitle: Text(
                     'Data: $formattedDate - Valor: R\$ ${operation.value.toStringAsFixed(2)}',
