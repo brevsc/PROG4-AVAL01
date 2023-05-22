@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Bank',
       theme: ThemeData(
         primarySwatch: Colors.purple,
@@ -71,6 +72,50 @@ class _HomePageState extends State<HomePage> {
                 );
               },
               child: const Text('Depósito'),
+            ),
+            TextButton(
+              onPressed: () {
+                Random random = Random();
+                double value = (random.nextDouble() * 999.99) + 0.01;
+                value = double.parse(value.toStringAsFixed(2));
+
+                if (value > balance) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const Alert(
+                        title: 'Aviso',
+                        description: 'O valor excede o saldo atual',
+                        buttonText: 'Ok',
+                      );
+                    },
+                  );
+                } else {
+                  DateTime date = DateTime.now()
+                      .subtract(Duration(days: random.nextInt(30)));
+
+                  setState(() {
+                    balance -= value;
+                    operations.add(Operation('Saque', date, value));
+                  });
+
+                  String formattedHour =
+                      date.toIso8601String().substring(11, 19);
+
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Alert(
+                        title: 'Sucesso',
+                        description:
+                            'Saque de R\$ ${value.toStringAsFixed(2)} realizado com sucesso às $formattedHour',
+                        buttonText: 'Ok',
+                      );
+                    },
+                  );
+                }
+              },
+              child: const Text('Saque'),
             ),
           ],
         ),
