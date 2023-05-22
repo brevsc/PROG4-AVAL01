@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import './models/operation.dart';
 import './widgets/alert.dart';
+import './utils/format_date_time.dart';
 
 void main() {
   runApp(const MyApp());
@@ -40,6 +41,35 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nubank 2'),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Saldo: R\$ ${balance.toStringAsFixed(2)}',
+            style: const TextStyle(fontSize: 24),
+          ),
+          const SizedBox(height: 20),
+          const Text(
+            'Extrato da conta:',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: operations.length,
+              itemBuilder: (context, index) {
+                Operation operation = operations[index];
+                String formattedDate = formatDateTime(operation.date);
+                return ListTile(
+                  title: Text(operation.description),
+                  subtitle: Text(
+                    'Data: $formattedDate - Valor: R\$ ${operation.value.toStringAsFixed(2)}',
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomAppBar(
         child: Row(
