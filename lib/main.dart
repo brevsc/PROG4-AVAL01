@@ -16,9 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'AxiomFinance',
-      theme: ThemeData(
-        primarySwatch: Colors.purple,
-      ),
+      theme: ThemeData(primarySwatch: Colors.purple, useMaterial3: true),
       home: const HomePage(),
     );
   }
@@ -41,13 +39,17 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('AxiomFinance'),
+        backgroundColor: Theme.of(context).secondaryHeaderColor,
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            'Saldo: R\$ ${balance.toStringAsFixed(2)}',
-            style: const TextStyle(fontSize: 24),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16.0),
+            child: Text(
+              'Saldo: R\$ ${balance.toStringAsFixed(2)}',
+              style: const TextStyle(fontSize: 24),
+            ),
           ),
           const SizedBox(height: 20),
           const Text(
