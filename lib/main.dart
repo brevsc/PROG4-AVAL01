@@ -38,9 +38,25 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('AxiomFinance'),
-        backgroundColor: Theme.of(context).secondaryHeaderColor,
-      ),
+          title: const Text('AxiomFinance'),
+          backgroundColor: Theme.of(context).secondaryHeaderColor,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.info),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return const Alert(
+                        title: 'Sobre o app',
+                        description:
+                            'Aplicação em Flutter que simula operações de depósito e saque. Desenvolvido por Breno Vasconcelos, Dymas Sousa e Heron Nepomuceno.',
+                        buttonText: 'Ok');
+                  },
+                );
+              },
+            ),
+          ]),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
